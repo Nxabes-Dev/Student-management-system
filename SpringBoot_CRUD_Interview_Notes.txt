@@ -1,0 +1,558 @@
+====================================================
+SPRING BOOT CRUD PROJECT - INTERVIEW NOTES
+====================================================
+
+PROJECT:
+Spring Boot CRUD Application using:
+- Spring Boot 3.5
+- Spring Data JPA
+- MySQL
+- Maven
+- Postman
+
+====================================================
+1. WHAT IS SPRING BOOT?
+====================================================
+
+Spring Boot is a framework built on top of Spring that
+helps create production-ready applications quickly.
+
+Advantages:
+- Less configuration
+- Embedded Tomcat
+- Auto Configuration
+- Dependency Management
+- Faster Development
+
+Interview:
+Q: Why use Spring Boot?
+A:
+To simplify Spring application development through
+auto-configuration and embedded servers.
+
+====================================================
+2. WHAT IS CRUD?
+====================================================
+
+CRUD =
+
+C = Create
+R = Read
+U = Update
+D = Delete
+
+Examples:
+
+POST    -> Create
+GET     -> Read
+PUT     -> Update
+DELETE  -> Delete
+
+====================================================
+3. PROJECT STRUCTURE
+====================================================
+
+src/main/java
+
+com.example.cruddemo
+
+│
+├── controller
+│   └── StudentController
+│
+├── service
+│   └── StudentService
+│
+├── repository
+│   └── StudentRepository
+│
+├── entity
+│   └── Student
+│
+└── CrudDemoApplication
+
+====================================================
+4. WHAT IS AN ENTITY?
+====================================================
+
+Entity represents a table in the database.
+
+Example:
+
+@Entity
+@Table(name="students")
+public class Student
+
+Interview:
+Q: What is @Entity?
+A:
+Marks a class as a JPA entity and maps it to a database table.
+
+====================================================
+5. @ID
+====================================================
+
+@Id
+
+Marks the primary key column.
+
+Example:
+
+@Id
+private Long id;
+
+Interview:
+Q: What is a primary key?
+A:
+A unique identifier for each record.
+
+====================================================
+6. @GeneratedValue
+====================================================
+
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+
+Automatically generates IDs.
+
+Example:
+
+1
+2
+3
+4
+...
+
+Interview:
+Q: Why use @GeneratedValue?
+A:
+To let the database generate unique IDs automatically.
+
+====================================================
+7. REPOSITORY LAYER
+====================================================
+
+public interface StudentRepository
+extends JpaRepository<Student, Long>
+
+Purpose:
+Communicates with database.
+
+JpaRepository already provides:
+
+save()
+findAll()
+findById()
+deleteById()
+
+Interview:
+Q: What is JpaRepository?
+A:
+An interface provided by Spring Data JPA that gives CRUD operations without writing SQL.
+
+====================================================
+8. SERVICE LAYER
+====================================================
+
+@Service
+
+Purpose:
+Contains business logic.
+
+Flow:
+
+Controller
+   ↓
+Service
+   ↓
+Repository
+   ↓
+Database
+
+Interview:
+Q: Why use Service Layer?
+
+A:
+- Separates business logic
+- Cleaner code
+- Easier maintenance
+- Better testing
+
+====================================================
+9. CONTROLLER LAYER
+====================================================
+
+@RestController
+
+Purpose:
+Handles HTTP Requests.
+
+Examples:
+
+GET
+POST
+PUT
+DELETE
+
+Interview:
+Q: What is @RestController?
+
+A:
+Combination of:
+@Controller
+@ResponseBody
+
+Returns JSON directly.
+
+====================================================
+10. DEPENDENCY INJECTION
+====================================================
+
+Constructor Injection
+
+Example:
+
+private final StudentService service;
+
+public StudentController(StudentService service){
+    this.service = service;
+}
+
+Interview:
+Q: What is Dependency Injection?
+
+A:
+Spring automatically creates and injects objects.
+
+Benefits:
+- Loose coupling
+- Better testing
+- Cleaner code
+
+====================================================
+11. GET API
+====================================================
+
+@GetMapping
+
+Read data.
+
+Example:
+
+@GetMapping
+public List<Student> getStudents()
+
+URL:
+
+GET
+/api/students
+
+====================================================
+12. GET BY ID
+====================================================
+
+@GetMapping("/{id}")
+
+Example:
+
+GET
+/api/students/1
+
+@PathVariable
+
+Extracts value from URL.
+
+Interview:
+Q: What is @PathVariable?
+
+A:
+Used to read values from URL.
+
+====================================================
+13. POST API
+====================================================
+
+@PostMapping
+
+Creates new data.
+
+Example:
+
+POST
+/api/students
+
+Body:
+
+{
+  "name":"John",
+  "email":"john@gmail.com"
+}
+
+====================================================
+14. @RequestBody
+====================================================
+
+@RequestBody
+
+Converts JSON to Java Object.
+
+Example:
+
+public Student save(
+@RequestBody Student student)
+
+Interview:
+Q: What does @RequestBody do?
+
+A:
+Maps JSON request body to Java object.
+
+====================================================
+15. PUT API
+====================================================
+
+@PutMapping("/{id}")
+
+Updates existing data.
+
+Example:
+
+PUT
+/api/students/1
+
+====================================================
+16. DELETE API
+====================================================
+
+@DeleteMapping("/{id}")
+
+Deletes a record.
+
+Example:
+
+DELETE
+/api/students/1
+
+====================================================
+17. SPRING ANNOTATIONS
+====================================================
+
+@SpringBootApplication
+Starts Spring Boot app
+
+@Entity
+Database table mapping
+
+@Table
+Custom table name
+
+@Id
+Primary key
+
+@GeneratedValue
+Auto generate ID
+
+@Repository
+Database layer
+
+@Service
+Business logic layer
+
+@RestController
+REST APIs
+
+@GetMapping
+GET request
+
+@PostMapping
+POST request
+
+@PutMapping
+PUT request
+
+@DeleteMapping
+DELETE request
+
+@PathVariable
+Read value from URL
+
+@RequestBody
+Read JSON body
+
+====================================================
+18. DATABASE FLOW
+====================================================
+
+POSTMAN
+   ↓
+Controller
+   ↓
+Service
+   ↓
+Repository
+   ↓
+MySQL
+
+====================================================
+19. MYSQL QUESTIONS
+====================================================
+
+Q: Difference between MySQL and MongoDB?
+
+MySQL:
+- Relational Database
+- Tables
+- Rows
+- SQL
+
+MongoDB:
+- NoSQL
+- Collections
+- Documents
+- JSON-like structure
+
+For beginners:
+Use MySQL first.
+
+====================================================
+20. WHAT HAPPENS WHEN APPLICATION STARTS?
+====================================================
+
+1. Main method runs
+
+2. Spring Boot starts
+
+3. Embedded Tomcat starts
+
+4. Database connection created
+
+5. Beans created
+
+6. APIs become available
+
+====================================================
+21. WHAT IS A BEAN?
+====================================================
+
+A bean is an object managed by Spring.
+
+Examples:
+
+@Service
+@Repository
+@RestController
+
+Interview:
+Q: What is a Spring Bean?
+
+A:
+An object created and managed by Spring Container.
+
+====================================================
+22. HTTP METHODS
+====================================================
+
+GET
+Read Data
+
+POST
+Create Data
+
+PUT
+Update Data
+
+DELETE
+Delete Data
+
+====================================================
+23. STATUS CODES
+====================================================
+
+200 OK
+
+201 Created
+
+400 Bad Request
+
+404 Not Found
+
+500 Internal Server Error
+
+====================================================
+24. IMPORTANT INTERVIEW QUESTIONS
+====================================================
+
+Q1. What is Spring Boot?
+
+Q2. Difference between Spring and Spring Boot?
+
+Q3. What is Dependency Injection?
+
+Q4. What is Bean?
+
+Q5. What is @RestController?
+
+Q6. What is @Service?
+
+Q7. What is JpaRepository?
+
+Q8. What is @Entity?
+
+Q9. What is @RequestBody?
+
+Q10. What is @PathVariable?
+
+Q11. Difference between PUT and POST?
+
+Q12. Difference between MySQL and MongoDB?
+
+Q13. What is primary key?
+
+Q14. Why use Service Layer?
+
+Q15. Explain project flow.
+
+====================================================
+25. NEXT TOPICS TO LEARN
+====================================================
+
+1. Exception Handling
+   @ControllerAdvice
+
+2. DTO Pattern
+
+3. Validation
+   @Valid
+
+4. Custom Queries
+
+5. Pagination
+
+6. Sorting
+
+7. Spring Security
+
+8. JWT Authentication
+
+9. Swagger/OpenAPI
+
+10. Unit Testing
+
+====================================================
+PROJECT COMPLETED
+====================================================
+
+CRUD Operations:
+✓ Create
+✓ Read All
+✓ Read By Id
+✓ Update
+✓ Delete
+
+Technologies Used:
+✓ Spring Boot
+✓ Maven
+✓ MySQL
+✓ Spring Data JPA
+✓ Postman
+
+You have now built a complete beginner-level Spring Boot CRUD application.
